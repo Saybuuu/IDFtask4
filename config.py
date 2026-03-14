@@ -33,14 +33,14 @@ TARGET_COLUMNS = [
 
 
 def normalize_customer_id(value: Any) -> int | None:
-    """Convert customer id to int or return None for empty values."""
+    """Преобразуем id в int или возвращаем None для пустых."""
     if pd.isna(value):
         return None
     return int(value)
 
 
 def normalize_description(value: Any) -> str:
-    """Convert description to str or return None for empty values"""
+    """Преобразуем к str или возвращаем None для пустых значений"""
     if pd.isna(value):
         return ""
     return str(value).strip()

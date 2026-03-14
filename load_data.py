@@ -19,7 +19,7 @@ load_dotenv()
 
 
 def get_clickhouse_config() -> dict[str, str | int]:
-    """Read ClickHouse connection settings from environment variables."""
+    """Считывайте параметры подключения ClickHouse из переменных среды."""
     return {
         "host": os.getenv("CLICKHOUSE_HOST", "localhost"),
         "port": int(os.getenv("CLICKHOUSE_HTTP_PORT", "8124")),
@@ -30,25 +30,25 @@ def get_clickhouse_config() -> dict[str, str | int]:
 
 
 def validate_source_file() -> None:
-    """Validate that the input file exists."""
+    """Проверка, что входной файл существует."""
     if not SOURCE_FILE.exists():
         raise FileNotFoundError(f"Source file not found: {SOURCE_FILE}")
 
 
 def validate_required_columns(df: pd.DataFrame) -> None:
-    """Validate that all required source columns are present."""
+    """Проверяем, что все необходимые столбцы исходного кода присутствуют."""
     missing_columns = set(SOURCE_TO_TARGET_COLUMNS.keys()) - set(df.columns)
     if missing_columns:
         raise ValueError(f"Missing required columns: {sorted(missing_columns)}")
 
 
 def extract_data() -> pd.DataFrame:
-    """Read source Excel file into dataframe."""
+    """Excel в датафрейм."""
     return pd.read_excel(SOURCE_FILE)
 
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Rename, select, and normalize input data."""
+    """Переименовываем и нормализуем входные данные."""
     validate_required_columns(df)
 
     df = df.rename(columns=SOURCE_TO_TARGET_COLUMNS)
@@ -61,7 +61,7 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_clickhouse_client(config: dict[str, str | int]):
-    """Create and return ClickHouse client."""
+    """Создаем клиент"""
     return clickhouse_connect.get_client(
         host=config["host"],
         port=config["port"],
@@ -72,12 +72,12 @@ def get_clickhouse_client(config: dict[str, str | int]):
 
 
 def prepare_records(df: pd.DataFrame) -> list[tuple]:
-    """Convert dataframe into list of tuples for ClickHouse insert."""
+    """Преобразовать датафрейм в список кортежей для вставки данных в ClickHouse."""
     return list(df[TARGET_COLUMNS].itertuples(index=False, name=None))
 
 
 def load_to_clickhouse(df: pd.DataFrame, config: dict[str, str | int]) -> int:
-    """Insert transformed dataframe into ClickHouse and return inserted row count."""
+    """Сохраняем преобразованный датафрейм в ClickHouse и получаем количество вставленных строк."""
     if df.empty:
         return 0
 
@@ -94,7 +94,7 @@ def load_to_clickhouse(df: pd.DataFrame, config: dict[str, str | int]) -> int:
 
 
 def main() -> None:
-    """Run end-to-end data load from Excel into ClickHouse."""
+    
     validate_source_file()
 
     clickhouse_config = get_clickhouse_config()
