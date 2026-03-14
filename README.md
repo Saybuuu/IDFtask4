@@ -16,7 +16,9 @@
 - проверки данных в dbt,
 - воспроизводимый запуск через Docker.
 
-Источник данных — Excel файл с датасетом Online Retail.
+Источник данных — Excel файл с датасетом Online Retail c ресурса Kaggle.
+
+https://www.kaggle.com/datasets/lakshmi25npathi/online-retail-dataset
 
 ---
 

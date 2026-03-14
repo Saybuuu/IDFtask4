@@ -1,10 +1,10 @@
-select
-    toDate(invoice_date) as day,
-    round(sum(quantity * unit_price), 2) as revenue,
-    sum(quantity) as total_quantity,
-    count() as row_count
-from {{ source('task4', 'stg_online_retail') }}
-where quantity > 0
-  and unit_price > 0
-group by day
-order by day
+SELECT
+    toDate(invoice_date) AS day,
+    round(sum(quantity * unit_price), 2) AS revenue,
+    sum(quantity) AS total_quantity,
+    count() AS row_count
+FROM {{ source('task4', 'stg_online_retail') }}
+WHERE quantity > 0
+  AND unit_price > 0
+GROUP BY day
+ORDER BY day

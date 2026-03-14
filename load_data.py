@@ -32,17 +32,17 @@ def get_clickhouse_config() -> dict[str, str | int]:
 def validate_source_file() -> None:
     """Проверка, что входной файл существует."""
     if not SOURCE_FILE.exists():
-        raise FileNotFoundError(f"Source file not found: {SOURCE_FILE}")
+        raise FileNotFoundError(f"Ошибка источника: {SOURCE_FILE}")
 
 
 def validate_required_columns(df: pd.DataFrame) -> None:
     """Проверяем, что все необходимые столбцы исходного кода присутствуют."""
     missing_columns = set(SOURCE_TO_TARGET_COLUMNS.keys()) - set(df.columns)
     if missing_columns:
-        raise ValueError(f"Missing required columns: {sorted(missing_columns)}")
+        raise ValueError(f"Отсутсвуют колонки: {sorted(missing_columns)}")
 
 
-def extract_data() -> pd.DataFrame:
+def excel_to_dataframe() -> pd.DataFrame:
     """Excel в датафрейм."""
     return pd.read_excel(SOURCE_FILE)
 
@@ -99,15 +99,15 @@ def main() -> None:
 
     clickhouse_config = get_clickhouse_config()
 
-    raw_df = extract_data()
+    raw_df = excel_to_dataframe()
     if raw_df.empty:
-        raise ValueError("Source file is empty.")
+        raise ValueError("Пустой источник.")
 
     transformed_df = transform_data(raw_df)
     inserted_rows = load_to_clickhouse(transformed_df, clickhouse_config)
 
     print(
-        f"Loaded {inserted_rows} rows into "
+        f"Загружено {inserted_rows} строк"
         f"{clickhouse_config['database']}.{TARGET_TABLE}"
     )
 
