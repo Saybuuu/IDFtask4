@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: task4
+    database: task4
+    schema: task4
+    tables:
+      - name: stg_online_retail
+        description: Staging retail data loaded from Excel into ClickHouse.

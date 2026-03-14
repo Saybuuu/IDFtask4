@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: mart_revenue_by_day
+    description: Daily revenue metrics aggregated from stg_online_retail.
+
+    columns:
+      - name: day
+        description: Calendar day of invoice.
+        tests:
+          - not_null
+
+      - name: revenue
+        description: Total revenue for the day.
+
+      - name: total_quantity
+        description: Total quantity sold for the day.
+
+      - name: row_count
+        description: Number of source rows aggregated into the day.
+
+  - name: mart_top_products
+    description: Top products ranked by revenue.
+
+    columns:
+      - name: stock_code
+        description: Product stock code.
+        tests:
+          - not_null
+
+      - name: description
+        description: Product description.
+
+      - name: revenue
+        description: Total revenue by product.
+
+      - name: total_quantity
+        description: Total sold quantity by product.
+
+      - name: row_count
+        description: Number of source rows aggregated into the product.
+
+  - name: mart_customer_ltv_by_month
+    description: Monthly customer revenue aggregation used as a simple LTV-style mart.
+
+    columns:
+      - name: month
+        description: First day of the month for aggregation.
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Unique customer identifier.
+        tests:
+          - not_null
+
+      - name: monthly_revenue
+        description: Total customer revenue within the month.
+
+      - name: total_orders
+        description: Number of distinct invoices for the customer in the month.
+
+      - name: total_items
+        description: Total quantity of items purchased by the customer in the month.
