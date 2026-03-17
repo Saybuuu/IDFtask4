@@ -10,4 +10,4 @@ WHERE quantity > 0
   AND stock_code != ''
 GROUP BY stock_code
 ORDER BY revenue DESC
-LIMIT 50;
+LIMIT 50
